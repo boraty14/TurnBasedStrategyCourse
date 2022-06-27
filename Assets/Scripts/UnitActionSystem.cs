@@ -4,12 +4,23 @@ using UnityEngine;
 [DefaultExecutionOrder(-10)]
 public class UnitActionSystem : MonoBehaviour
 {
-    [SerializeField] private LayerMask _unitLayerMask;
-    
+    public static UnitActionSystem Instance { get; private set; }
     public Action OnSelectedUnitChanged;
     public Unit SelectedUnit => _selectedUnit;
 
+    [SerializeField] private LayerMask _unitLayerMask;
     private Unit _selectedUnit;
+
+    private void Awake()
+    {
+        if (Instance != null)
+        {
+            Debug.LogError("There is more than one UnityAction System");
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+    }
 
     private void Update()
     {
