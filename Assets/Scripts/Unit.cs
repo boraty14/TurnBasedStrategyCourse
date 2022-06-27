@@ -14,13 +14,13 @@ public class Unit : MonoBehaviour
     private const float RotateSpeed = 10f;
     private const float StoppingDistance = .1f;
 
+    private void Awake()
+    {
+        _targetPosition = transform.position;
+    }
+
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Move(MouseWorld.GetPosition());
-        }
-
         if (Vector3.Distance(_targetPosition, transform.position) < StoppingDistance)
         {
             _unitAnimator.SetBool(IsWalking, false);
@@ -35,7 +35,7 @@ public class Unit : MonoBehaviour
         transform.position += moveDirection * deltaTime * MoveSpeed;
     }
 
-    private void Move(Vector3 targetPosition)
+    public void Move(Vector3 targetPosition)
     {
         _targetPosition = targetPosition;
     }
