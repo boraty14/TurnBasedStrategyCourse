@@ -1,13 +1,14 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-[DefaultExecutionOrder(-10 )]
+[DefaultExecutionOrder(-10)]
 public class UnitActionSystem : MonoBehaviour
 {
     [SerializeField] private LayerMask _unitLayerMask;
     
+    public Action OnSelectedUnitChanged;
+    public Unit SelectedUnit => _selectedUnit;
+
     private Unit _selectedUnit;
 
     private void Update()
@@ -24,7 +25,15 @@ public class UnitActionSystem : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if(!Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, _unitLayerMask)) return false;
 
-        return hit.transform.TryGetComponent<Unit>(out _selectedUnit);
+        if (!hit.transform.TryGetComponent<Unit>(out _selectedUnit)) return false;
+        SetSelectedUnit();
+        return true;
 
     }
+
+    private void SetSelectedUnit()
+    {
+        OnSelectedUnitChanged?.Invoke();
+    }
+
 }
