@@ -11,6 +11,7 @@ public class Unit : MonoBehaviour
     private static readonly int IsWalking = Animator.StringToHash("IsWalking");
 
     private const float MoveSpeed = 4f;
+    private const float RotateSpeed = 10f;
     private const float StoppingDistance = .1f;
 
     private void Update()
@@ -29,7 +30,9 @@ public class Unit : MonoBehaviour
         _unitAnimator.SetBool(IsWalking, true);
 
         Vector3 moveDirection = (_targetPosition - transform.position).normalized;
-        transform.position += moveDirection * Time.deltaTime * MoveSpeed;
+        float deltaTime = Time.deltaTime;
+        transform.forward = Vector3.Lerp(transform.forward,moveDirection,deltaTime * RotateSpeed);
+        transform.position += moveDirection * deltaTime * MoveSpeed;
     }
 
     private void Move(Vector3 targetPosition)
