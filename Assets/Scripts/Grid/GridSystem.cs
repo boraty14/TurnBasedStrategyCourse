@@ -59,5 +59,12 @@ namespace Grid
         {
             return _gridObjectArray[gridPosition.x, gridPosition.z];
         }
+
+        public bool IsValidGridPosition(GridPosition gridPosition)
+        {
+            if (gridPosition.x < 0 || gridPosition.z < 0) return false;
+            if (gridPosition.x > _width || gridPosition.z > _height) return false;
+            return true;
+        }
     }
 }

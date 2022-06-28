@@ -24,10 +24,37 @@ public class CameraController : MonoBehaviour
         _targetFollowOffset = _cinemachineTransposer.m_FollowOffset;
     }
 
-    void Update()
+    private void Update()
     {
         float deltaTime = Time.deltaTime;
         
+        HandleMovement(deltaTime);
+        HandleRotation(deltaTime);
+        HandelZoom(deltaTime);
+    }
+
+    private void HandelZoom(float deltaTime)
+    {
+        _targetFollowOffset.y = Mathf.Clamp(_targetFollowOffset.y + Input.mouseScrollDelta.y * _zoomAmount,
+            MIN_FOLLOW_Y_OFFSET,
+            MAX_FOLLOW_Y_OFFSET);
+
+        _cinemachineTransposer.m_FollowOffset = Vector3.Lerp(_cinemachineTransposer.m_FollowOffset, _targetFollowOffset,
+            deltaTime * _zoomSpeed);
+    }
+
+    private void HandleRotation(float deltaTime)
+    {
+        Vector3 rotationVector = Vector3.zero;
+
+        if (Input.GetKey(KeyCode.Q)) rotationVector.y += 1f;
+        if (Input.GetKey(KeyCode.E)) rotationVector.y -= 1f;
+
+        transform.eulerAngles += rotationVector * deltaTime * _rotationSpeed;
+    }
+
+    private void HandleMovement(float deltaTime)
+    {
         Vector3 inputMoveDirection = Vector3.zero;
         if (Input.GetKey(KeyCode.W)) inputMoveDirection.z += 1f;
         if (Input.GetKey(KeyCode.A)) inputMoveDirection.x -= 1f;
@@ -36,21 +63,5 @@ public class CameraController : MonoBehaviour
 
         Vector3 moveVector = transform.forward * inputMoveDirection.z + transform.right * inputMoveDirection.x;
         transform.position += moveVector * deltaTime * _moveSpeed;
-
-        Vector3 rotationVector = Vector3.zero;
-        
-        if (Input.GetKey(KeyCode.Q)) rotationVector.y += 1f;
-        if (Input.GetKey(KeyCode.E)) rotationVector.y -= 1f;
-
-        transform.eulerAngles += rotationVector * deltaTime * _rotationSpeed;
-
-        _targetFollowOffset.y = Mathf.Clamp(_targetFollowOffset.y + Input.mouseScrollDelta.y * _zoomAmount,
-            MIN_FOLLOW_Y_OFFSET,
-            MAX_FOLLOW_Y_OFFSET);
-
-        _cinemachineTransposer.m_FollowOffset = Vector3.Lerp(_cinemachineTransposer.m_FollowOffset, _targetFollowOffset,
-            deltaTime * _zoomSpeed);
-
-
     }
 }
