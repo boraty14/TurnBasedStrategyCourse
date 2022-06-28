@@ -1,62 +1,63 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class GridSystem
+namespace Grid
 {
-    private int _width;
-    private int _height;
-    private float _cellSize;
-    private GridObject[,] _gridObjectArray;
-
-    public GridSystem(int width, int height, float cellSize)
+    public class GridSystem
     {
-        _width = width;
-        _height = height;
-        _cellSize = cellSize;
+        private int _width;
+        private int _height;
+        private float _cellSize;
+        private GridObject[,] _gridObjectArray;
 
-        _gridObjectArray = new GridObject[_width, height];
-
-        for (int x = 0; x < _width; x++)
+        public GridSystem(int width, int height, float cellSize)
         {
-            for (int z = 0; z < _height; z++)
+            _width = width;
+            _height = height;
+            _cellSize = cellSize;
+
+            _gridObjectArray = new GridObject[_width, height];
+
+            for (int x = 0; x < _width; x++)
             {
-                GridPosition gridPosition = new GridPosition(x, z);
-                _gridObjectArray[x, z] = new GridObject(this, gridPosition);
+                for (int z = 0; z < _height; z++)
+                {
+                    GridPosition gridPosition = new GridPosition(x, z);
+                    _gridObjectArray[x, z] = new GridObject(this, gridPosition);
+                }
             }
         }
-    }
 
 
-    public Vector3 GetWorldPosition(GridPosition gridPosition)
-    {
-        return new Vector3(gridPosition.x, 0, gridPosition.z) * _cellSize;
-    }
-
-    public GridPosition GetGridPosition(Vector3 worldPosition)
-    {
-        return new GridPosition(
-            Mathf.RoundToInt(worldPosition.x / _cellSize),
-            Mathf.RoundToInt(worldPosition.z / _cellSize)
-        );
-    }
-
-    public void CreateDebugObjects(GridDebugObject debugPrefab)
-    {
-        for (int x = 0; x < _width; x++)
+        public Vector3 GetWorldPosition(GridPosition gridPosition)
         {
-            for (int z = 0; z < _height; z++)
+            return new Vector3(gridPosition.x, 0, gridPosition.z) * _cellSize;
+        }
+
+        public GridPosition GetGridPosition(Vector3 worldPosition)
+        {
+            return new GridPosition(
+                Mathf.RoundToInt(worldPosition.x / _cellSize),
+                Mathf.RoundToInt(worldPosition.z / _cellSize)
+            );
+        }
+
+        public void CreateDebugObjects(GridDebugObject debugPrefab)
+        {
+            for (int x = 0; x < _width; x++)
             {
-                GridPosition gridPosition = new GridPosition(x, z);
-                GridDebugObject gridDebugObject = GameObject.Instantiate(debugPrefab, GetWorldPosition(gridPosition), Quaternion.identity);
-                gridDebugObject.SetGridObject(GetGridObject(gridPosition));
+                for (int z = 0; z < _height; z++)
+                {
+                    GridPosition gridPosition = new GridPosition(x, z);
+                    GridDebugObject gridDebugObject = GameObject.Instantiate(debugPrefab, GetWorldPosition(gridPosition), Quaternion.identity);
+                    gridDebugObject.SetGridObject(GetGridObject(gridPosition));
                 
+                }
             }
         }
-    }
 
-    public GridObject GetGridObject(GridPosition gridPosition)
-    {
-        return _gridObjectArray[gridPosition.x, gridPosition.z];
+        public GridObject GetGridObject(GridPosition gridPosition)
+        {
+            return _gridObjectArray[gridPosition.x, gridPosition.z];
+        }
     }
 }

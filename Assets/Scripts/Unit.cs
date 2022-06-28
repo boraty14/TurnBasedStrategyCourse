@@ -1,6 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using Grid;
 using UnityEngine;
 
 public class Unit : MonoBehaviour
@@ -8,8 +6,9 @@ public class Unit : MonoBehaviour
     [SerializeField] private Animator _unitAnimator;
 
     private Vector3 _targetPosition;
+    private GridPosition _gridPosition;
+    
     private static readonly int IsWalking = Animator.StringToHash("IsWalking");
-
     private const float MoveSpeed = 4f;
     private const float RotateSpeed = 10f;
     private const float StoppingDistance = .1f;
@@ -17,6 +16,12 @@ public class Unit : MonoBehaviour
     private void Awake()
     {
         _targetPosition = transform.position;
+    }
+
+    private void Start()
+    {
+        _gridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+        LevelGrid.Instance.AddUnitAtGridPosition(_gridPosition,this);
     }
 
     private void Update()
@@ -33,6 +38,12 @@ public class Unit : MonoBehaviour
         float deltaTime = Time.deltaTime;
         transform.forward = Vector3.Lerp(transform.forward,moveDirection,deltaTime * RotateSpeed);
         transform.position += moveDirection * deltaTime * MoveSpeed;
+        
+        GridPosition newGridPosition = LevelGrid.Instance.GetGridPosition(transform.position);
+        if (newGridPosition == _gridPosition) return;
+        LevelGrid.Instance.UnitMovedGridPosition(this,_gridPosition,newGridPosition);
+        _gridPosition = newGridPosition;
+
     }
 
     public void Move(Vector3 targetPosition)
