@@ -11,10 +11,12 @@ public class MoveAction : MonoBehaviour
     private const float RotateSpeed = 10f;
     private const float StoppingDistance = .1f;
 
-    [SerializeField] private int _maxMoveDistance = 4;
+    [SerializeField] private int _maxMoveDistance = 3;
     [SerializeField] private Animator _unitAnimator;
     private Unit _unit;
     private Vector3 _targetPosition;
+
+    private List<GridPosition> _validGridPositionList = new List<GridPosition>();
 
 
     private void Awake()
@@ -52,12 +54,12 @@ public class MoveAction : MonoBehaviour
 
     public List<GridPosition> GetValidActionGridPositionList()
     {
-        List<GridPosition> validGridPositionList = new List<GridPosition>();
+        _validGridPositionList.Clear();
         GridPosition unitGridPosition = _unit.GetGridPosition();
 
-        for (int x = -_maxMoveDistance; x <= _maxMoveDistance; x++)
+        for (int x = -_maxMoveDistance+1; x < _maxMoveDistance; x++)
         {
-            for (int z = -_maxMoveDistance; z < _maxMoveDistance; z++)
+            for (int z = -_maxMoveDistance+1; z < _maxMoveDistance; z++)
             {
                 GridPosition offsetGridPosition = new GridPosition(x, z);
                 GridPosition testGridPosition = unitGridPosition + offsetGridPosition;
@@ -66,12 +68,12 @@ public class MoveAction : MonoBehaviour
                     testGridPosition == unitGridPosition ||
                     LevelGrid.Instance.HasUnitOnGridPosition(testGridPosition)) continue;
                 
-                validGridPositionList.Add(testGridPosition);
+                _validGridPositionList.Add(testGridPosition);
                 Debug.Log(testGridPosition);
             }
         }
 
 
-        return validGridPositionList;
+        return _validGridPositionList;
     }
 }

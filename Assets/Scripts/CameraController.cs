@@ -30,12 +30,12 @@ public class CameraController : MonoBehaviour
         
         HandleMovement(deltaTime);
         HandleRotation(deltaTime);
-        HandelZoom(deltaTime);
+        HandleZoom(deltaTime);
     }
 
-    private void HandelZoom(float deltaTime)
+    private void HandleZoom(float deltaTime)
     {
-        _targetFollowOffset.y = Mathf.Clamp(_targetFollowOffset.y + Input.mouseScrollDelta.y * _zoomAmount,
+        _targetFollowOffset.y = Mathf.Clamp(_targetFollowOffset.y - Input.mouseScrollDelta.y * _zoomAmount,
             MIN_FOLLOW_Y_OFFSET,
             MAX_FOLLOW_Y_OFFSET);
 
@@ -47,8 +47,8 @@ public class CameraController : MonoBehaviour
     {
         Vector3 rotationVector = Vector3.zero;
 
-        if (Input.GetKey(KeyCode.Q)) rotationVector.y += 1f;
-        if (Input.GetKey(KeyCode.E)) rotationVector.y -= 1f;
+        if (Input.GetKey(KeyCode.Q)) rotationVector.y -= 1f;
+        if (Input.GetKey(KeyCode.E)) rotationVector.y += 1f;
 
         transform.eulerAngles += rotationVector * deltaTime * _rotationSpeed;
     }
