@@ -7,6 +7,7 @@ namespace Actions
     {
         protected Unit _unit;
         protected bool _isActive = false;
+        protected Action _onActionComplete;
 
         protected virtual void Awake()
         {

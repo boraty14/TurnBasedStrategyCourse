@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Actions
@@ -6,6 +7,7 @@ namespace Actions
     {
         [SerializeField] private float _spinSpeed;
         private float _totalSpinAmount = 0f;
+        
         private void Update()
         {
             if(!_isActive) return;
@@ -17,13 +19,15 @@ namespace Actions
             {
                 _totalSpinAmount = 0;
                 _isActive = false;
+                _onActionComplete?.Invoke();
             }
         }
 
-        public void Spin()
+        public void Spin(Action clearBusy)
         {
             _totalSpinAmount = 0f;
             _isActive = true;
+            _onActionComplete = clearBusy;
         }
     }
 }
