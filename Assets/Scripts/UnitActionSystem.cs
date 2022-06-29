@@ -19,37 +19,44 @@ public class UnitActionSystem : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
         Instance = this;
     }
 
     private void Update()
     {
-        if (!Input.GetMouseButtonDown(0)) return;
-        
-        if(TryHandleUnitSelection()) return;
-        if (_selectedUnit == null) return;
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (TryHandleUnitSelection()) return;
+            if (_selectedUnit == null) return;
 
-        var mouseWorldPosition = MouseWorld.GetPosition();
-        var mouseGridPosition = LevelGrid.Instance.GetGridPosition(mouseWorldPosition);
-        if (!_selectedUnit.GetMoveAction().IsValidActionGridPosition(mouseGridPosition)) return;
-        
-        _selectedUnit.GetMoveAction().Move(mouseGridPosition);
+            var mouseWorldPosition = MouseWorld.GetPosition();
+            var mouseGridPosition = LevelGrid.Instance.GetGridPosition(mouseWorldPosition);
+            if (!_selectedUnit.GetMoveAction().IsValidActionGridPosition(mouseGridPosition)) return;
+
+            _selectedUnit.GetMoveAction().Move(mouseGridPosition);
+        }
+
+        else if (Input.GetMouseButtonDown(1))
+        {
+            if (TryHandleUnitSelection()) return;
+            if (_selectedUnit == null) return;
+            _selectedUnit.GetSpinAction().Spin();
+        }
     }
 
     private bool TryHandleUnitSelection()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if(!Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, _unitLayerMask)) return false;
+        if (!Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, _unitLayerMask)) return false;
 
         if (!hit.transform.TryGetComponent<Unit>(out _selectedUnit)) return false;
         SetSelectedUnit();
         return true;
-
     }
 
     private void SetSelectedUnit()
     {
         OnSelectedUnitChanged?.Invoke();
     }
-
 }

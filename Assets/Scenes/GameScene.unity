@@ -1159,10 +1159,9 @@ PrefabInstance:
     serializedVersion: 2
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3232724516785281843, guid: 39c9a1bfbc6ab4ac8ade114b5248a3c6,
-        type: 3}
-      propertyPath: _maxMoveDistance
-      value: 4
+    - target: {fileID: 1818749083, guid: 39c9a1bfbc6ab4ac8ade114b5248a3c6, type: 3}
+      propertyPath: _spinSpeed
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 4710215921667435892, guid: 39c9a1bfbc6ab4ac8ade114b5248a3c6,
         type: 3}
