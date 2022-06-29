@@ -29,5 +29,7 @@ namespace Actions
             _isActive = true;
             _onActionComplete = clearBusy;
         }
+        
+        public override string GetActionName() => "Spin";
     }
 }

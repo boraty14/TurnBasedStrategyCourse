@@ -13,5 +13,7 @@ namespace Actions
         {
             _unit = GetComponent<Unit>();
         }
+
+        public abstract string GetActionName();
     }
 }

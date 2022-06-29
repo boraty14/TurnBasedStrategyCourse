@@ -83,5 +83,7 @@ namespace Actions
 
             return _validGridPositionList;
         }
+
+        public override string GetActionName() => "Move";
     }
 }
