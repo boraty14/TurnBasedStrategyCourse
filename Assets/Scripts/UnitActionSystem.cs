@@ -1,6 +1,7 @@
 using System;
 using Actions;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 [DefaultExecutionOrder(-10)]
 public class UnitActionSystem : MonoBehaviour
@@ -30,40 +31,24 @@ public class UnitActionSystem : MonoBehaviour
     private void Update()
     {
         if (_isBusy) return;
+        if (EventSystem.current.IsPointerOverGameObject()) return;
         if (TryHandleUnitSelection()) return;
         if (_selectedUnit == null) return;
-        
+
         HandleSelectedAction();
     }
 
     private void HandleSelectedAction()
     {
         if (!Input.GetMouseButtonDown(0)) return;
-        
+
         var mouseWorldPosition = MouseWorld.GetPosition();
         var mouseGridPosition = LevelGrid.Instance.GetGridPosition(mouseWorldPosition);
 
-        switch (_selectedAction)
-        {
-            case MoveAction moveAction:
-            {
-                if (_selectedUnit.GetMoveAction().IsValidActionGridPosition(mouseGridPosition))
-                {
-                    SetBusy();
-                    moveAction.Move(mouseGridPosition,ClearBusy);
-                }
+        if (!_selectedAction.IsValidActionGridPosition(mouseGridPosition)) return;
 
-                break;
-            }
-            case SpinAction spinAction:
-            {
-                SetBusy();
-                spinAction.Spin(ClearBusy);
-                break;
-            }
-                
-        }
-        
+        SetBusy();
+        _selectedAction.TakeAction(mouseGridPosition, ClearBusy);
     }
 
     private void SetBusy() => _isBusy = true;
@@ -75,13 +60,19 @@ public class UnitActionSystem : MonoBehaviour
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (!Physics.Raycast(ray, out RaycastHit hit, float.MaxValue, _unitLayerMask)) return false;
 
-        if (!hit.transform.TryGetComponent<Unit>(out _selectedUnit)) return false;
-        SetSelectedUnit();
-        return true;
+        if (hit.transform.TryGetComponent<Unit>(out Unit unit))
+        {
+            if (unit == _selectedUnit) return false;
+            SetSelectedUnit(unit);
+            return true;
+        }
+
+        return false;
     }
 
-    private void SetSelectedUnit()
+    private void SetSelectedUnit(Unit unit)
     {
+        _selectedUnit = unit;
         SetSelectedAction(_selectedUnit.GetMoveAction());
         OnSelectedUnitChanged?.Invoke();
     }
@@ -90,4 +81,6 @@ public class UnitActionSystem : MonoBehaviour
     {
         _selectedAction = baseAction;
     }
+
+    public BaseAction GetSelectedAction() => _selectedAction;
 }

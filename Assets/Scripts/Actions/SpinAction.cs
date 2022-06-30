@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using Grid;
 using UnityEngine;
 
 namespace Actions
@@ -23,11 +25,19 @@ namespace Actions
             }
         }
 
-        public void Spin(Action clearBusy)
+        public override void TakeAction(GridPosition gridPosition, Action clearBusy)
         {
             _totalSpinAmount = 0f;
             _isActive = true;
             _onActionComplete = clearBusy;
+        }
+
+
+        public override List<GridPosition> GetValidActionGridPositionList()
+        {
+            _validGridPositionList.Clear();
+            _validGridPositionList.Add(_unit.GetGridPosition());
+            return _validGridPositionList;
         }
         
         public override string GetActionName() => "Spin";

@@ -35,6 +35,7 @@ public class UnitActionSystemUI : MonoBehaviour
         {
             var actionButtonUI = Instantiate(_actionButtonPrefab, _actionButtonContainerTransform);
             actionButtonUI.SetBaseAction(_baseActions[i]);
+            Debug.Log(i);
         }
         
     }

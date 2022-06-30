@@ -16,7 +16,6 @@ namespace Actions
         [SerializeField] private Animator _unitAnimator;
         private Vector3 _targetPosition;
 
-        private List<GridPosition> _validGridPositionList = new List<GridPosition>();
 
 
         protected override void Awake()
@@ -46,20 +45,15 @@ namespace Actions
             }
         }
 
-        public void Move(GridPosition gridPosition,Action clearBusy)
+        public override void TakeAction(GridPosition gridPosition,Action clearBusy)
         {
             _targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
             _isActive = true;
             _onActionComplete = clearBusy;
         }
 
-        public bool IsValidActionGridPosition(GridPosition gridPosition)
-        {
-            var validActionGridPosition = GetValidActionGridPositionList();
-            return validActionGridPosition.Contains(gridPosition);
-        }
 
-        public List<GridPosition> GetValidActionGridPositionList()
+        public override List<GridPosition> GetValidActionGridPositionList()
         {
             _validGridPositionList.Clear();
             GridPosition unitGridPosition = _unit.GetGridPosition();
@@ -76,7 +70,6 @@ namespace Actions
                         LevelGrid.Instance.HasUnitOnGridPosition(testGridPosition)) continue;
 
                     _validGridPositionList.Add(testGridPosition);
-                    Debug.Log(testGridPosition);
                 }
             }
 
