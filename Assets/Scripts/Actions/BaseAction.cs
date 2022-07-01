@@ -7,6 +7,7 @@ namespace Actions
 {
     public abstract class BaseAction : MonoBehaviour
     {
+        [SerializeField] private int _actionCost = 1;
         protected Unit _unit;
         protected bool _isActive = false;
         protected Action _onActionComplete;
@@ -27,5 +28,6 @@ namespace Actions
         }
 
         public abstract List<GridPosition> GetValidActionGridPositionList();
+        public int GetActionPointsCost() => _actionCost;
     }
 }

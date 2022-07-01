@@ -10,6 +10,7 @@ public class UnitActionSystem : MonoBehaviour
     public Action OnSelectedUnitChanged;
     public Action OnSelectedActionChanged;
     public Action<bool> OnBusyChange;
+    public Action OnActionStarted;
     public Unit SelectedUnit => _selectedUnit;
 
     [SerializeField] private LayerMask _unitLayerMask;
@@ -47,10 +48,12 @@ public class UnitActionSystem : MonoBehaviour
         var mouseWorldPosition = MouseWorld.GetPosition();
         var mouseGridPosition = LevelGrid.Instance.GetGridPosition(mouseWorldPosition);
 
-        if (!_selectedAction.IsValidActionGridPosition(mouseGridPosition)) return;
-
+        if (!_selectedAction.IsValidActionGridPosition(mouseGridPosition)||
+            !_selectedUnit.TrySpendActionPointsToTakeAction(_selectedAction)) return;
+        
         SetBusy();
         _selectedAction.TakeAction(mouseGridPosition, ClearBusy);
+        OnActionStarted?.Invoke();
     }
 
     private void SetBusy()
