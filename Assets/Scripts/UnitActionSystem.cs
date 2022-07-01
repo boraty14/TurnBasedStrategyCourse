@@ -9,6 +9,7 @@ public class UnitActionSystem : MonoBehaviour
     public static UnitActionSystem Instance { get; private set; }
     public Action OnSelectedUnitChanged;
     public Action OnSelectedActionChanged;
+    public Action<bool> OnBusyChange;
     public Unit SelectedUnit => _selectedUnit;
 
     [SerializeField] private LayerMask _unitLayerMask;
@@ -52,8 +53,17 @@ public class UnitActionSystem : MonoBehaviour
         _selectedAction.TakeAction(mouseGridPosition, ClearBusy);
     }
 
-    private void SetBusy() => _isBusy = true;
-    private void ClearBusy() => _isBusy = false;
+    private void SetBusy()
+    {
+        _isBusy = true;
+        OnBusyChange?.Invoke(_isBusy);
+    }
+
+    private void ClearBusy()
+    {
+        _isBusy = false;
+        OnBusyChange?.Invoke(_isBusy);
+    }
 
     private bool TryHandleUnitSelection()
     {
