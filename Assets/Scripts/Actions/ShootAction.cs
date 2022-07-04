@@ -16,7 +16,13 @@ public class ShootAction : BaseAction
 
     private const float RotateSpeed = 10f;
 
-    public Action onShoot;
+    public Action<OnShootEventArgs> onShoot;
+
+    public  class OnShootEventArgs : EventArgs
+    {
+        public Unit targetUnit;
+        public Unit shootingUnit;
+    }
 
     private enum State
     {
@@ -57,7 +63,11 @@ public class ShootAction : BaseAction
 
     private void Shoot()
     {
-        onShoot?.Invoke();
+        onShoot?.Invoke(new OnShootEventArgs
+        {
+            targetUnit = _targetUnit,
+            shootingUnit = _unit
+        });
         _targetUnit.Damage();
     }
 
