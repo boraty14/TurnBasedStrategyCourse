@@ -7,16 +7,15 @@ namespace Actions
 {
     public class MoveAction : BaseAction
     {
-        private static readonly int IsWalking = Animator.StringToHash("IsWalking");
         private const float MoveSpeed = 4f;
         private const float RotateSpeed = 10f;
         private const float StoppingDistance = .1f;
 
         [SerializeField] private int _maxMoveDistance = 3;
-        [SerializeField] private Animator _unitAnimator;
         private Vector3 _targetPosition;
 
-
+        public Action onStartMoving;
+        public Action onStopMoving;
 
         protected override void Awake()
         {
@@ -34,12 +33,11 @@ namespace Actions
 
             if (Vector3.Distance(_targetPosition, transform.position) < StoppingDistance)
             {
-                _unitAnimator.SetBool(IsWalking, false);
                 ActionComplete();
+                onStopMoving?.Invoke();
             }
             else
             {
-                _unitAnimator.SetBool(IsWalking, true);
                 transform.position += moveDirection * deltaTime * MoveSpeed;
             }
         }
@@ -48,6 +46,7 @@ namespace Actions
         {
             _targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
             ActionStart(clearBusy);
+            onStartMoving?.Invoke();
         }
 
 

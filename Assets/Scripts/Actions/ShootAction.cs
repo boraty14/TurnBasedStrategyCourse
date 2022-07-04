@@ -13,8 +13,10 @@ public class ShootAction : BaseAction
     private float _stateTimer;
     private Unit _targetUnit;
     private bool _canShootBullet;
-    
+
     private const float RotateSpeed = 10f;
+
+    public Action onShoot;
 
     private enum State
     {
@@ -55,6 +57,7 @@ public class ShootAction : BaseAction
 
     private void Shoot()
     {
+        onShoot?.Invoke();
         _targetUnit.Damage();
     }
 

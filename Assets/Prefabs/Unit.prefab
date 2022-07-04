@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4710215921667435892}
   - component: {fileID: 4710215921667435891}
   - component: {fileID: 1547695674}
+  - component: {fileID: -550542190246658140}
   - component: {fileID: 3232724516785281843}
   - component: {fileID: 1818749083}
   - component: {fileID: 4146113070290997557}
@@ -36,7 +37,7 @@ Transform:
   - {fileID: 4705780309223633591}
   - {fileID: 5535896192804715901}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4710215921667435891
 MonoBehaviour:
@@ -64,6 +65,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.56385463, y: 1.8552793, z: 0.39409423}
   m_Center: {x: -0.011965901, y: 0.8876397, z: -0.032250047}
+--- !u!114 &-550542190246658140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4710215921667435893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff0b29125635842c6859be45751a5217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 4614573000115524527}
 --- !u!114 &3232724516785281843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105,6 +119,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63f694d490e154d5cb0e2ab911750727, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _actionCost: 1
+  _maxShootDistance: 7
 --- !u!1 &4835705309758852925
 GameObject:
   m_ObjectHideFlags: 0
