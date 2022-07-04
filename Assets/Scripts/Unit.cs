@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
+    [SerializeField] private bool _isEnemy;
     private GridPosition _gridPosition;
     private MoveAction _moveAction;
     private SpinAction _spinAction;
@@ -58,9 +59,17 @@ public class Unit : MonoBehaviour
     }
 
     public int GetActionPoints() => _actionPoints;
+    public bool IsEnemy() => _isEnemy;
     private void OnTurnChanged()
     {
+        if (!IsThisUnitsTurn()) return;
         _actionPoints = ACTION_POINTS_MAX;
         OnAnyActionPointsChanged?.Invoke();
+    }
+
+    private bool IsThisUnitsTurn()
+    {
+        return (IsEnemy() && !TurnSystem.Instance.IsPlayerTurn()) ||
+               (!IsEnemy() && TurnSystem.Instance.IsPlayerTurn());
     }
 }
