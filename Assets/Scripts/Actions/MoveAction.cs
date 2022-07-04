@@ -35,8 +35,7 @@ namespace Actions
             if (Vector3.Distance(_targetPosition, transform.position) < StoppingDistance)
             {
                 _unitAnimator.SetBool(IsWalking, false);
-                _isActive = false;
-                _onActionComplete?.Invoke();
+                ActionComplete();
             }
             else
             {
@@ -48,8 +47,7 @@ namespace Actions
         public override void TakeAction(GridPosition gridPosition,Action clearBusy)
         {
             _targetPosition = LevelGrid.Instance.GetWorldPosition(gridPosition);
-            _isActive = true;
-            _onActionComplete = clearBusy;
+            ActionStart(clearBusy);
         }
 
 

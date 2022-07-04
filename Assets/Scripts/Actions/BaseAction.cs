@@ -29,5 +29,17 @@ namespace Actions
 
         public abstract List<GridPosition> GetValidActionGridPositionList();
         public int GetActionPointsCost() => _actionCost;
+
+        protected void ActionStart(Action onActionComplete)
+        {
+            _isActive = true;
+            _onActionComplete = onActionComplete;
+        }
+
+        protected void ActionComplete()
+        {
+            _isActive = false;
+            _onActionComplete?.Invoke();
+        }
     }
 }

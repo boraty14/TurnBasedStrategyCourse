@@ -20,16 +20,14 @@ namespace Actions
             if (_totalSpinAmount > 360)
             {
                 _totalSpinAmount = 0;
-                _isActive = false;
-                _onActionComplete?.Invoke();
+                ActionComplete();
             }
         }
 
         public override void TakeAction(GridPosition gridPosition, Action clearBusy)
         {
             _totalSpinAmount = 0f;
-            _isActive = true;
-            _onActionComplete = clearBusy;
+            ActionStart(clearBusy);
         }
 
 

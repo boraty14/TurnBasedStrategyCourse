@@ -72,4 +72,14 @@ public class Unit : MonoBehaviour
         return (IsEnemy() && !TurnSystem.Instance.IsPlayerTurn()) ||
                (!IsEnemy() && TurnSystem.Instance.IsPlayerTurn());
     }
+
+    public void Damage()
+    {
+        Debug.Log(transform.name + " damage");
+    }
+
+    public Vector3 GetWorldPosition()
+    {
+        return transform.position;
+    }
 }

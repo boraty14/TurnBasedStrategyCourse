@@ -30,5 +30,7 @@ namespace Grid
             }
             return _gridPosition.ToString() + "\n" + unitString;
         }
+
+        public Unit GetUnit() => _unitList[0] == null ? null : _unitList[0];
     }
 }
